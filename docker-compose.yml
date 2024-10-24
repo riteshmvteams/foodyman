@@ -1,0 +1,20 @@
+services:
+  web:
+    build: .
+    container_name: feastez-web
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.feastez-web.rule=Host(`feastez.com`)"
+      - "traefik.http.routers.feastez-web.entrypoints=websecure"
+      - "traefik.http.services.feastez-web.loadbalancer.server.port=3000"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
+
+networks:
+  proxy:
+    external: true
